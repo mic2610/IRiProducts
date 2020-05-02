@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IRiProducts.Business.Models
+namespace IRiProducts.Web.Models
 {
     public class Product
     {

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<IRiProducts.Business.Models.Product>
+﻿@model IEnumerable<Product>
 
 @{
   ViewData["Title"] = "Products";
@@ -22,6 +22,9 @@
         @Html.DisplayNameFor(model => model.Code)
       </th>
       <th>
+        @Html.DisplayNameFor(model => model.RetailerName)
+      </th>
+      <th>
         @Html.DisplayNameFor(model => model.DateReceived)
       </th>
     </tr>
@@ -41,6 +44,9 @@
         </td>
         <td>
           @Html.DisplayFor(modelItem => item.Code)
+        </td>
+        <td>
+          @Html.DisplayFor(modelItem => item.RetailerName)
         </td>
         <td>
           @Html.DisplayFor(modelItem => item.DateReceived)

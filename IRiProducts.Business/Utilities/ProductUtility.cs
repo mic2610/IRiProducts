@@ -21,7 +21,8 @@ namespace IRiProducts.Business.Utilities
             // Iterate through product ids groupings
             foreach (var retailProductGroup in retailerProducts.GroupBy(rp => rp.Id))
             {
-                var productName = iriProductLookup.TryGetValue(retailProductGroup.Key, out var iriProduct) ? iriProduct.Name : "Product Name not available";
+                // Return a safe failure if the product name is not available within the lookup
+                var productName = iriProductLookup.TryGetValue(retailProductGroup.Key, out var iriProduct) ? iriProduct.Name : Constants.Product.NameNotAvailable;
 
                 // Iterate through product code type groupings
                 foreach (var retailerProductCodeTypeGroup in retailProductGroup.GroupBy(rp => rp.RetailerProductCodeType))
@@ -51,6 +52,7 @@ namespace IRiProducts.Business.Utilities
                 CodeType = retailerProduct.RetailerProductCodeType,
                 Id = retailerProduct.Id,
                 Name = name,
+                RetailerName = retailerProduct.RetailerName,
                 DateReceived = retailerProduct.DateReceived
             };
         }
