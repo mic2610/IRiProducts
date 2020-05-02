@@ -9,50 +9,51 @@ using IRiProducts.Core.Extensions;
 using IRiProducts.Web.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace IRiProducts.Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly ILogger<HomeController> _logger;
         private readonly IRetailerProductsService _retailerProductsService;
         private readonly IIRiProductsService _iRiProductsService;
 
-        public HomeController(IWebHostEnvironment webHostEnvironment, ILogger<HomeController> logger, IRetailerProductsService retailerProductsService, IIRiProductsService iRiProductsService)
+        public HomeController(IWebHostEnvironment webHostEnvironment, IRetailerProductsService retailerProductsService, IIRiProductsService iRiProductsService)
         {
             _webHostEnvironment = webHostEnvironment;
-            _logger = logger;
             _retailerProductsService = retailerProductsService;
             _iRiProductsService = iRiProductsService;
         }
 
         public IActionResult Index()
         {
-            var retailerProducts = GetRetailerProducts()?.ToList();
-            if (retailerProducts.IsNullOrEmpty())
-                return NotFound();
+            var retailProducts = GetRetailerProducts();
+            if (retailProducts.IsNullOrEmpty())
+                return null;
 
             var iriProductLookup = GetIRiProducts()?.ToDictionary(k => k.Id);
             if (iriProductLookup.IsNullOrEmpty())
-                return NotFound();
+                return null;
 
             var products = new List<Product>();
-            var groupedRetailerProducts = retailerProducts.OrderByDescending(rp => rp.DateReceived).GroupBy(rp => rp.RetailerProductCode);
-            foreach (var groupedRetailerProduct in groupedRetailerProducts)
+
+            // Iterate through product ids groupings
+            foreach (var retailProductGroup in retailProducts.GroupBy(rp => rp.Id))
             {
-                foreach (var retailerProduct in groupedRetailerProduct)
+                var productName = iriProductLookup.TryGetValue(retailProductGroup.Key, out var iriProduct) ? iriProduct.Name : "Product Name not available";
+
+                // Iterate through product code type groupings
+                foreach (var retailerProductCodeTypeGroup in retailProductGroup.GroupBy(rp => rp.RetailerProductCodeType))
                 {
-                    products.Add(new Product
-                    {
-                        Code = retailerProduct.RetailerProductCode,
-                        CodeType = retailerProduct.RetailerProductCodeType,
-                        Id = retailerProduct.Id,
-                        Name = iriProductLookup.TryGetValue(retailerProduct.Id, out var iriProduct) ? iriProduct.Name : "Product Name not available",
-                        DateReceived = retailerProduct.DateReceived
-                    });
+                    // Get the latest by date from the product code type grouping
+                    var retailerProduct = retailerProductCodeTypeGroup.OrderByDescending(rp => rp.DateReceived).FirstOrDefault();
+                    var product = BuildProduct(retailerProduct, productName);
+                    if (product == null)
+                        continue;
+
+                    products.Add(product);
                 }
+
             }
 
             return View(products);
@@ -70,13 +71,28 @@ namespace IRiProducts.Web.Controllers
             return View(iRiProducts);
         }
 
-        private IEnumerable<RetailerProduct> GetRetailerProducts()
+        private static Product BuildProduct(RetailerProduct retailerProduct, string name)
+        {
+            if (retailerProduct == null)
+                return null;
+
+            return new Product
+            {
+                Code = retailerProduct.RetailerProductCode,
+                CodeType = retailerProduct.RetailerProductCodeType,
+                Id = retailerProduct.Id,
+                Name = name,
+                DateReceived = retailerProduct.DateReceived
+            };
+        }
+
+        private IList<RetailerProduct> GetRetailerProducts()
         {
             var filePath = GetFilePath("Data", "RetailerProducts.txt");
             return _retailerProductsService.GetRetailerProducts(filePath);
         }
 
-        private IEnumerable<IriProduct> GetIRiProducts()
+        private IList<IriProduct> GetIRiProducts()
         {
             var filePath = GetFilePath("Data", "IRIProducts.txt");
             return _iRiProductsService.GetIriProducts(filePath);

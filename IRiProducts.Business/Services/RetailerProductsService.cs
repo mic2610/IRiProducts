@@ -20,6 +20,9 @@ namespace IRiProducts.Business.Services
             using (var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
                 csvReader.Configuration.RegisterClassMap<RetailProductMapping>();
+                
+                // Set to false to allow the first line to be read
+                csvReader.Configuration.HasHeaderRecord = false;
                 return csvReader.GetRecords<RetailerProduct>()?.ToList();
             }
         }

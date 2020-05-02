@@ -15,6 +15,9 @@ namespace IRiProducts.Business.Services
             using var reader = new StreamReader(path);
             using (var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
+                // Set to false to allow the first line to be read
+                csvReader.Configuration.HasHeaderRecord = false;
+
                 csvReader.Configuration.RegisterClassMap<IRiProductMapping>();
                 return csvReader.GetRecords<IriProduct>()?.ToList();
             }

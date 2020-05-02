@@ -18,10 +18,13 @@ namespace IRiProducts.Business.Services
             try
             {
                 using (var reader = new StreamReader(path, Encoding.Default))
-                using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+                using (var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture))
                 {
-                    csv.Configuration.RegisterClassMap<TCsvMap>();
-                    return csv.GetRecords<TModel>()?.ToList();
+                    csvReader.Configuration.RegisterClassMap<TCsvMap>();
+
+                    // Set to false to allow the first line to be read
+                    csvReader.Configuration.HasHeaderRecord = false;
+                    return csvReader.GetRecords<TModel>()?.ToList();
                 }
             }
             catch (UnauthorizedAccessException e)
