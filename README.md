@@ -28,7 +28,7 @@ This allows more moduler and cleaner code to be written and it also avoids any i
 * D - Dependency Inversion Principle: Use of injected services into controllers and services
 
 
-# SOLID Implementation:
+# Testing:
 Unit tests are structured in their own folder as according to class libaries. Unit tests have been built for IProductUtility and its implementation ProductUtility to test the core functionality of the site, which ti filter products by their product type code and then return the latest, this unit of work was tested using:
 * Arrange
 * Act
