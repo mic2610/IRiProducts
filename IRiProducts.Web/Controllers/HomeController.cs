@@ -4,25 +4,34 @@ using System.IO;
 using System.Linq;
 using IRiProducts.Business.Models;
 using IRiProducts.Business.Models.Csv;
+using IRiProducts.Business.Models.Settings;
 using IRiProducts.Business.Services;
 using IRiProducts.Core.Extensions;
 using IRiProducts.Web.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace IRiProducts.Web.Controllers
 {
     public class HomeController : Controller
     {
+        // Services
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IRetailerProductsService _retailerProductsService;
         private readonly IIRiProductsService _iRiProductsService;
 
-        public HomeController(IWebHostEnvironment webHostEnvironment, IRetailerProductsService retailerProductsService, IIRiProductsService iRiProductsService)
+        // Options
+        private readonly RetailerProductSettings _retailerProductSettings;
+        private readonly IRiProductSettings _iRiProductSettings;
+
+        public HomeController(IWebHostEnvironment webHostEnvironment, IRetailerProductsService retailerProductsService, IIRiProductsService iRiProductsService, IOptions<RetailerProductSettings> retailerProductSettings, IOptions<IRiProductSettings> iRiProductSettings)
         {
             _webHostEnvironment = webHostEnvironment;
             _retailerProductsService = retailerProductsService;
             _iRiProductsService = iRiProductsService;
+            _retailerProductSettings = retailerProductSettings.Value;
+            _iRiProductSettings = iRiProductSettings.Value;
         }
 
         public IActionResult Index()
@@ -45,8 +54,9 @@ namespace IRiProducts.Web.Controllers
                 // Iterate through product code type groupings
                 foreach (var retailerProductCodeTypeGroup in retailProductGroup.GroupBy(rp => rp.RetailerProductCodeType))
                 {
+                    // Use MaxBy
                     // Get the latest by date from the product code type grouping
-                    var retailerProduct = retailerProductCodeTypeGroup.OrderByDescending(rp => rp.DateReceived).FirstOrDefault();
+                    var retailerProduct = retailerProductCodeTypeGroup.MaxBy(rp => rp.DateReceived);
                     var product = BuildProduct(retailerProduct, productName);
                     if (product == null)
                         continue;
@@ -71,6 +81,12 @@ namespace IRiProducts.Web.Controllers
             return View(iRiProducts);
         }
 
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
         private static Product BuildProduct(RetailerProduct retailerProduct, string name)
         {
             if (retailerProduct == null)
@@ -88,13 +104,13 @@ namespace IRiProducts.Web.Controllers
 
         private IList<RetailerProduct> GetRetailerProducts()
         {
-            var filePath = GetFilePath("Data", "RetailerProducts.txt");
+            var filePath = GetFilePath(_retailerProductSettings.DirectoryName, _retailerProductSettings.FileName);
             return _retailerProductsService.GetRetailerProducts(filePath);
         }
 
         private IList<IriProduct> GetIRiProducts()
         {
-            var filePath = GetFilePath("Data", "IRIProducts.txt");
+            var filePath = GetFilePath(_iRiProductSettings.DirectoryName, _iRiProductSettings.FileName);
             return _iRiProductsService.GetIriProducts(filePath);
         }
 
@@ -103,12 +119,6 @@ namespace IRiProducts.Web.Controllers
             var data = Path.Combine(_webHostEnvironment.WebRootPath, directoryName);
             var directory = new DirectoryInfo(data);
             return Path.Combine(directory.FullName, fileName);
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

@@ -9,10 +9,6 @@ namespace IRiProducts.Business
     {
         public static void ConfigureBusinessServices(this IServiceCollection services, IConfiguration configuration)
         {
-            // Options
-            services.Configure<RetailerProductSettings>(configuration.GetSection(nameof(RetailerProductSettings)));
-            services.Configure<IRiProductSettings>(configuration.GetSection(nameof(IRiProductSettings)));
-
             // Services
             services.AddScoped<ICsvParserService, CsvParserService>();
             services.AddScoped<IRetailerProductsService, RetailerProductsService>();

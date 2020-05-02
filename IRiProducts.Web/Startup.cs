@@ -1,4 +1,5 @@
 using IRiProducts.Business;
+using IRiProducts.Business.Models.Settings;
 using IRiProducts.Business.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,6 +22,11 @@ namespace IRiProducts.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            // Configure Options
+            services.Configure<RetailerProductSettings>(Configuration.GetSection(nameof(RetailerProductSettings)));
+            services.Configure<IRiProductSettings>(Configuration.GetSection(nameof(IRiProductSettings)));
+
             services.ConfigureBusinessServices(Configuration);
         }
 
