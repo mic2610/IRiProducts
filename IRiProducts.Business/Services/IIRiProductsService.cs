@@ -5,6 +5,6 @@ namespace IRiProducts.Business.Services
 {
     public interface IIRiProductsService
     {
-        IList<IriProduct> GetIriProducts(string path);
+        IList<IRiProduct> GetIRiProducts(string path);
     }
 }

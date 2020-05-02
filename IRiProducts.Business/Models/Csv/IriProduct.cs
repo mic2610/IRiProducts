@@ -2,7 +2,7 @@
 
 namespace IRiProducts.Business.Models.Csv
 {
-    public class IriProduct
+    public class IRiProduct
     {
         [Index(0)]
         public int Id { get; set; }

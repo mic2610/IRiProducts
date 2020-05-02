@@ -3,7 +3,7 @@ using IRiProducts.Business.Models.Csv;
 
 namespace IRiProducts.Business.CsvMappings.Csv
 {
-    public class IRiProductMapping : ClassMap<IriProduct>
+    public class IRiProductMapping : ClassMap<IRiProduct>
     {
         public IRiProductMapping()
         {

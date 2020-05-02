@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using IRiProducts.Business.Models.Settings;
 using IRiProducts.Business.Services;
+using IRiProducts.Business.Utilities;
 using Microsoft.Extensions.Configuration;
 
 namespace IRiProducts.Business
@@ -13,6 +14,9 @@ namespace IRiProducts.Business
             services.AddScoped<ICsvParserService, CsvParserService>();
             services.AddScoped<IRetailerProductsService, RetailerProductsService>();
             services.AddScoped<IIRiProductsService, IRiProductsService>();
+
+            // Utilities
+            services.AddScoped<IProductUtility, ProductUtility>();
         }
     }
 }

@@ -1,30 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using CsvHelper;
-using IRiProducts.Business.CsvMappings;
+﻿using System.Collections.Generic;
 using IRiProducts.Business.CsvMappings.Csv;
-using IRiProducts.Business.Models;
 using IRiProducts.Business.Models.Csv;
 
 namespace IRiProducts.Business.Services
 {
     public class RetailerProductsService : IRetailerProductsService
     {
+        private readonly ICsvParserService _csvParserService;
+
+        public RetailerProductsService(ICsvParserService csvParserService)
+        {
+            _csvParserService = csvParserService;
+        }
+
         public IList<RetailerProduct> GetRetailerProducts(string path)
         {
-            using var reader = new StreamReader(path);
-            using (var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture))
-            {
-                csvReader.Configuration.RegisterClassMap<RetailProductMapping>();
-                
-                // Set to false to allow the first line to be read
-                csvReader.Configuration.HasHeaderRecord = false;
-                return csvReader.GetRecords<RetailerProduct>()?.ToList();
-            }
+            return !string.IsNullOrWhiteSpace(path) ? _csvParserService.GetRecords<RetailerProduct, RetailProductMapping>(path) : null;
         }
     }
 }

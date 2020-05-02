@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using CsvHelper;
 using CsvHelper.Configuration;
 
@@ -17,7 +16,7 @@ namespace IRiProducts.Business.Services
         {
             try
             {
-                using (var reader = new StreamReader(path, Encoding.Default))
+                using (var reader = new StreamReader(path))
                 using (var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture))
                 {
                     csvReader.Configuration.RegisterClassMap<TCsvMap>();

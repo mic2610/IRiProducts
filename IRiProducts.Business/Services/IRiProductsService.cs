@@ -10,17 +10,16 @@ namespace IRiProducts.Business.Services
 {
     public class IRiProductsService : IIRiProductsService
     {
-        public IList<IriProduct> GetIriProducts(string path)
-        {
-            using var reader = new StreamReader(path);
-            using (var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture))
-            {
-                // Set to false to allow the first line to be read
-                csvReader.Configuration.HasHeaderRecord = false;
+        private readonly ICsvParserService _csvParserService;
 
-                csvReader.Configuration.RegisterClassMap<IRiProductMapping>();
-                return csvReader.GetRecords<IriProduct>()?.ToList();
-            }
+        public IRiProductsService(ICsvParserService csvParserService)
+        {
+            _csvParserService = csvParserService;
+        }
+
+        public IList<IRiProduct> GetIRiProducts(string path)
+        {
+            return !string.IsNullOrWhiteSpace(path) ? _csvParserService.GetRecords<IRiProduct, IRiProductMapping>(path) : null;
         }
     }
 }
