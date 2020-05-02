@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using IRiProducts.Business.Services;
 using IRiProducts.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -8,19 +9,17 @@ namespace IRiProducts.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IRetailerProductsService _retailerProductsService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IRetailerProductsService retailerProductsService)
         {
             _logger = logger;
+            _retailerProductsService = retailerProductsService;
         }
 
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
+            var retailerProducts = _retailerProductsService.GetRetailerProducts();
             return View();
         }
 
