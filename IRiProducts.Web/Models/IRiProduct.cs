@@ -1,6 +1,4 @@
-﻿using CsvHelper.Configuration.Attributes;
-
-namespace IRiProducts.Web.Models
+﻿namespace IRiProducts.Web.Models
 {
     public class IRiProduct
     {

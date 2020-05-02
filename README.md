@@ -13,10 +13,10 @@ Setup
 
 Movies solution has been developed in .NET Core 3.1 using the existing boilerplate with many modifications. It has been developed using the Onion architecture consisting of the following in order from the inner most layer to the outer most layer:
 
-* 1) IRi.Core
-* 2) IRi.Data
-* 3) IRi.Business
-* 4) IRi.Web
+* IRi.Core
+* IRi.Data
+* IRi.Business
+* IRi.Web
 
 This allows more moduler and cleaner code to be written and it also avoids any issues in Dependency Injection such as a circular dependency from when two services attempt to access each other. Furthermore this solution also uses SOLID principles:
 
@@ -29,4 +29,7 @@ This allows more moduler and cleaner code to be written and it also avoids any i
 
 
 # SOLID Implementation:
-Unit tests are structured in their own folder as according to class libaries
+Unit tests are structured in their own folder as according to class libaries. Unit tests have been built for IProductUtility and its implementation ProductUtility to test the core functionality of the site, which ti filter products by their product type code and then return the latest, this unit of work was tested using:
+* Arrange
+* Act
+* Assert

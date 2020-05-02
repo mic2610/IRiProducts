@@ -1,13 +1,11 @@
 using AutoMapper;
 using IRiProducts.Business;
 using IRiProducts.Business.Models.Settings;
-using IRiProducts.Business.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using AutoMapper;
 using IRiProducts.Web.Mappings;
 
 namespace IRiProducts.Web
@@ -30,6 +28,7 @@ namespace IRiProducts.Web
             services.Configure<RetailerProductSettings>(Configuration.GetSection(nameof(RetailerProductSettings)));
             services.Configure<IRiProductSettings>(Configuration.GetSection(nameof(IRiProductSettings)));
 
+            // Add AutoMapper profile mappings
             services.AddAutoMapper(typeof(IRiProductMapping), typeof(RetailerProductMapping), typeof(ProductMapping));
 
             services.ConfigureBusinessServices(Configuration);

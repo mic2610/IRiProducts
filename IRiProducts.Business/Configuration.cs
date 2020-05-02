@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using IRiProducts.Business.Models.Settings;
 using IRiProducts.Business.Services;
 using IRiProducts.Business.Utilities;
 using Microsoft.Extensions.Configuration;
