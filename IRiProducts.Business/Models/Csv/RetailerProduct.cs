@@ -1,7 +1,7 @@
 ﻿using System;
 using CsvHelper.Configuration.Attributes;
 
-namespace IRiProducts.Business.Models
+namespace IRiProducts.Business.Models.Csv
 {
     public class RetailerProduct
     {

@@ -6,7 +6,9 @@ using System.Linq;
 using System.Text;
 using CsvHelper;
 using IRiProducts.Business.CsvMappings;
+using IRiProducts.Business.CsvMappings.Csv;
 using IRiProducts.Business.Models;
+using IRiProducts.Business.Models.Csv;
 
 namespace IRiProducts.Business.Services
 {

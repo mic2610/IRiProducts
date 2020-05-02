@@ -1,4 +1,6 @@
-﻿namespace IRiProducts.Business.Models
+﻿using System;
+
+namespace IRiProducts.Business.Models
 {
     public class Product
     {
@@ -9,5 +11,7 @@
         public string CodeType { get; set; }
 
         public string Code { get; set; }
+
+        public DateTime DateReceived { get; set; }
     }
 }

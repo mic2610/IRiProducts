@@ -1,52 +1,51 @@
-﻿@model IEnumerable<IRiProducts.Business.Models.RetailerProduct>
+﻿@model IEnumerable<IRiProducts.Business.Models.Product>
 
 @{
-  ViewData["Title"] = "Retailer Products";
+  ViewData["Title"] = "Products";
 }
 
-<h1>Retailer Products</h1>
+<h1>Products</h1>
 
 <table class="table">
   <thead>
-  <tr>
-    <th>
-      @Html.DisplayNameFor(model => model.Id)
-    </th>
-    <th>
-      @Html.DisplayNameFor(model => model.RetailerName)
-    </th>
-    <th>
-      @Html.DisplayNameFor(model => model.RetailerProductCode)
-    </th>
-    <th>
-      @Html.DisplayNameFor(model => model.RetailerProductCodeType)
-    </th>
-    <th>
-      @Html.DisplayNameFor(model => model.DateReceived)
-    </th>
-    <th></th>
-  </tr>
+    <tr>
+      <th>
+        @Html.DisplayNameFor(model => model.Id)
+      </th>
+      <th>
+        @Html.DisplayNameFor(model => model.Name)
+      </th>
+      <th>
+        @Html.DisplayNameFor(model => model.CodeType)
+      </th>
+      <th>
+        @Html.DisplayNameFor(model => model.Code)
+      </th>
+      <th>
+        @Html.DisplayNameFor(model => model.DateReceived)
+      </th>
+    </tr>
   </thead>
   <tbody>
-  @foreach (var item in Model)
-  {
-    <tr>
-      <td>
-        @Html.DisplayFor(modelItem => item.Id)
-      </td>
-      <td>
-        @Html.DisplayFor(modelItem => item.RetailerName)
-      </td>
-      <td>
-        @Html.DisplayFor(modelItem => item.RetailerProductCode)
-      </td>
-      <td>
-        @Html.DisplayFor(modelItem => item.RetailerProductCodeType)
-      </td>
-      <td>
-        @Html.DisplayFor(modelItem => item.DateReceived)
-      </td>
-    </tr>
-  }
+    @foreach (var item in Model)
+    {
+      <tr>
+        <td>
+          @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+          @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+          @Html.DisplayFor(modelItem => item.CodeType)
+        </td>
+        <td>
+          @Html.DisplayFor(modelItem => item.Code)
+        </td>
+        <td>
+          @Html.DisplayFor(modelItem => item.DateReceived)
+        </td>
+      </tr>
+    }
   </tbody>
 </table>

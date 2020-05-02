@@ -1,3 +1,4 @@
+using IRiProducts.Business;
 using IRiProducts.Business.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -20,7 +21,7 @@ namespace IRiProducts.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddScoped<IRetailerProductsService, RetailerProductsService>();
+            services.ConfigureBusinessServices(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

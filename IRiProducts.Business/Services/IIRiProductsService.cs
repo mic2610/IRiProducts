@@ -3,8 +3,8 @@ using IRiProducts.Business.Models.Csv;
 
 namespace IRiProducts.Business.Services
 {
-    public interface IRetailerProductsService
+    public interface IIRiProductsService
     {
-        IList<RetailerProduct> GetRetailerProducts(string path);
+        IList<IriProduct> GetIriProducts(string path);
     }
 }

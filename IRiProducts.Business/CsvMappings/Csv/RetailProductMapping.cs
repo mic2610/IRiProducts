@@ -1,8 +1,9 @@
 ﻿using CsvHelper.Configuration;
 using IRiProducts.Business.Models;
+using IRiProducts.Business.Models.Csv;
 using IRiProducts.Core.Extensions;
 
-namespace IRiProducts.Business.CsvMappings
+namespace IRiProducts.Business.CsvMappings.Csv
 {
     public class RetailProductMapping : ClassMap<RetailerProduct>
     {
