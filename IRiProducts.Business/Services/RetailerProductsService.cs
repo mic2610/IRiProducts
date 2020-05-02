@@ -12,9 +12,9 @@ namespace IRiProducts.Business.Services
 {
     public class RetailerProductsService : IRetailerProductsService
     {
-        public IList<RetailerProduct> GetRetailerProducts()
+        public IList<RetailerProduct> GetRetailerProducts(string path)
         {
-            using var reader = new StreamReader(@"C:\dev\Challenges\IRiProducts\IRiProducts.Web\wwwroot\Data");
+            using var reader = new StreamReader(path);
             using (var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
                 csvReader.Configuration.RegisterClassMap<RetailProductMapping>();
